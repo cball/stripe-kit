@@ -9,13 +9,14 @@ import NIO
 import NIOHTTP1
 import Foundation
 
-public protocol SessionRoutes {
+public protocol SessionRoutes: StripeAPIRoute {
     /// Creates a Session object.
     /// - Parameters:
     ///   - lineItems: A list of items the customer is purchasing. Use this parameter to pass one-time or recurring Prices. For payment mode, there is a maximum of 100 line items, however it is recommended to consolidate line items if there are more than a few dozen. For subscription mode, there is a maximum of 20 line items with recurring Prices and 20 line items with one-time Prices. Line items with one-time Prices will be on the initial invoice only.
     ///   - mode: The mode of the Checkout Session. Pass `subscription` if the Checkout Session includes at least one recurring item.
-    ///   - successUrl: The URL to which Stripe should send customers when payment or setup is complete. If you’d like to use information from the successful Checkout Session on your page, read the guide on customizing your success page.
-    ///   - cancelUrl: If set, Checkout displays a back button and customers will be directed to this URL if they decide to cancel payment and return to your website.
+    ///   - returnUrl: The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site. This parameter is required if uiMode is embedded and redirect-based payment methods are enabled on the session.
+    ///   - successUrl: The URL to which Stripe should send customers when payment or setup is complete. If you’d like to use information from the successful Checkout Session on your page, read the guide on customizing your success page. Not allowed if uiMode is embedded.
+    ///   - cancelUrl: If set, Checkout displays a back button and customers will be directed to this URL if they decide to cancel payment and return to your website. Not allowed if uiMode is embedded.
     ///   - clientReferenceId: A unique string to reference the Checkout Session. This can be a customer ID, a cart ID, or similar, and can be used to reconcile the session with your internal systems.
     ///   - currency: Three-letter ISO currency code, in lowercase. Must be a supported currency.
     ///   - customer: ID of an existing Customer, if one exists. In `payment` mode, the customer’s most recent card payment method will be used to prefill the email, name, card details, and billing address on the Checkout page. In `subscription` mode, the customer’s default payment method will be used if it’s a card, and otherwise the most recent card will be used. A valid billing address, billing name and billing email are required on the payment method for Checkout to prefill the customer’s card details. If the Customer already has a valid email set, the email will be prefilled and not editable in Checkout. If the Customer does not have a valid `email`, Checkout will set the email entered during the session on the Customer. If blank for Checkout Sessions in `payment` or `subscription` mode, Checkout will create a new Customer object based on information provided during the payment flow. You can set `payment_intent_data.setup_future_usage` to have Checkout automatically attach the payment method to the Customer you pass in for future reuse.
@@ -45,11 +46,13 @@ public protocol SessionRoutes {
     ///   - submitType: Describes the type of transaction being performed by Checkout in order to customize relevant text on the page, such as the submit button. `submit_type` can only be specified on Checkout Sessions in `payment` mode, but not Checkout Sessions in `subscription` or `setup` mode.
     ///   - subscriptionData: A subset of parameters to be passed to subscription creation for Checkout Sessions in subscription mode.
     ///   - taxIdCollection: Controls tax ID collection settings for the session.
+    ///   - uiMode: The UI mode of the Session. Defaults to hosted.
     ///   - expand: Specifies which fields in the response should be expanded.
     /// - Returns: Returns a Session object.
     func create(lineItems: [[String: Any]]?,
                 mode: SessionMode,
-                successUrl: String,
+                returnUrl: String?,
+                successUrl: String?,
                 cancelUrl: String?,
                 clientReferenceId: String?,
                 currency: Currency?,
@@ -80,6 +83,7 @@ public protocol SessionRoutes {
                 submitType: SessionSubmitType?,
                 subscriptionData: [String: Any]?,
                 taxIdCollection: [String: Any]?,
+                uiMode: SessionUIMode?,
                 expand: [String]?) async throws -> Session
     
     /// A Session can be expired when it is in one of these statuses: `open`
@@ -123,7 +127,8 @@ public struct StripeSessionRoutes: SessionRoutes {
     
     public func create(lineItems: [[String: Any]]? = nil,
                        mode: SessionMode,
-                       successUrl: String,
+                       returnUrl: String? = nil,
+                       successUrl: String? = nil,
                        cancelUrl: String? = nil,
                        clientReferenceId: String? = nil,
                        currency: Currency? = nil,
@@ -154,9 +159,18 @@ public struct StripeSessionRoutes: SessionRoutes {
                        submitType: SessionSubmitType? = nil,
                        subscriptionData: [String: Any]? = nil,
                        taxIdCollection: [String: Any]? = nil,
+                       uiMode: SessionUIMode? = nil,
                        expand: [String]? = nil) async throws -> Session {
-        var body: [String: Any] = ["mode": mode.rawValue,
-                                   "success_url": successUrl]
+        var body: [String: Any] = ["mode": mode.rawValue]
+        
+        if let returnUrl {
+            body["return_url"] = returnUrl
+        }
+        
+        if let successUrl {
+            body["success_url"] = successUrl
+        }
+        
         if let lineItems {
             body["line_items"] = lineItems
         }
@@ -279,6 +293,10 @@ public struct StripeSessionRoutes: SessionRoutes {
         
         if let taxIdCollection {
             taxIdCollection.forEach { body["tax_id_collection[\($0)]"] = $1 }
+        }
+        
+        if let uiMode {
+            body["ui_mode"] = uiMode
         }
         
         if let expand {

@@ -50,6 +50,8 @@ public struct Session: Codable {
     public var automaticTax: SessionAutomaticTax?
     /// The value (`auto` or `required`) for whether Checkout collected the customer’s billing address.
     public var billingAddressCollection: SessionBillingAddressCollection?
+    /// Client secret to be used when initializing Stripe.js embedded checkout.
+    public var clientSecret: String?
     /// Results of `consent_collection` for this session.
     public var consent: SessionConsent?
     /// When set, provides configuration for the Checkout Session to gather active consent from customers.
@@ -108,6 +110,8 @@ public struct Session: Codable {
     public var taxIdCollection: SessionTaxIdCollection?
     /// Tax and discount details for the computed total amount.
     public var totalDetails: SessionTotalDetails?
+    /// The UI mode of the Session. Defaults to hosted.
+    public var uiMode: SessionUIMode?
     
     public init(id: String,
                 cancelUrl: String? = nil,
@@ -130,6 +134,7 @@ public struct Session: Codable {
                 amountTotal: Int? = nil,
                 automaticTax: SessionAutomaticTax? = nil,
                 billingAddressCollection: SessionBillingAddressCollection? = nil,
+                clientSecret: String? = nil,
                 consent: SessionConsent? = nil,
                 consentCollection: SessionConsentCollection? = nil,
                 created: Date,
@@ -158,7 +163,8 @@ public struct Session: Codable {
                 submitType: SessionSubmitType? = nil,
                 subscription: String? = nil,
                 taxIdCollection: SessionTaxIdCollection? = nil,
-                totalDetails: SessionTotalDetails? = nil) {
+                totalDetails: SessionTotalDetails? = nil,
+                uiMode: SessionUIMode? = nil) {
         self.id = id
         self.cancelUrl = cancelUrl
         self.clientReferenceId = clientReferenceId
@@ -180,6 +186,7 @@ public struct Session: Codable {
         self.amountTotal = amountTotal
         self.automaticTax = automaticTax
         self.billingAddressCollection = billingAddressCollection
+        self.clientSecret = clientSecret
         self.consent = consent
         self.consentCollection = consentCollection
         self.created = created
@@ -209,6 +216,7 @@ public struct Session: Codable {
         self._subscription = Expandable(id: subscription)
         self.taxIdCollection = taxIdCollection
         self.totalDetails = totalDetails
+        self.uiMode = uiMode
     }
 }
 
@@ -721,6 +729,12 @@ public enum SessionMode: String, Codable {
     case subscription
 }
 
+public enum SessionUIMode: String, Codable {
+    /// The Checkout Session will be displayed as an embedded form on the merchant’s website.
+    case embedded
+    /// The Checkout Session will be displayed on a hosted page that customers will be redirected to.
+    case hosted
+}
 
 public enum SessionPaymentMethodCollection: String, Codable {
     /// The Checkout Session will always collect a PaymentMethod.
