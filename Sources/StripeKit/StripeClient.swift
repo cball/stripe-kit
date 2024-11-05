@@ -25,6 +25,7 @@ public final class StripeClient {
     public var payouts: PayoutRoutes
     public var refunds: RefundRoutes
     public var tokens: TokenRoutes
+    public var confirmationTokens: ConfirmationTokenRoutes
     public var ephemeralKeys: EphemeralKeyRoutes
     
     // MARK: - PAYMENT METHODS
@@ -120,6 +121,7 @@ public final class StripeClient {
     // MARK: - WEBHOOKS
     public var webhookEndpoints: WebhookEndpointRoutes
     
+    
     var handler: StripeAPIHandler
     
     /// Returns a StripeClient used to interact with the Stripe APIs.
@@ -143,6 +145,7 @@ public final class StripeClient {
         payouts = StripePayoutRoutes(apiHandler: handler)
         refunds = StripeRefundRoutes(apiHandler: handler)
         tokens = StripeTokenRoutes(apiHandler: handler)
+        confirmationTokens = StripeConfirmationTokenRoutes(apiHandler: handler)
         ephemeralKeys = StripeEphemeralKeyRoutes(apiHandler: handler)
         
         paymentMethods = StripePaymentMethodRoutes(apiHandler: handler)
@@ -224,5 +227,6 @@ public final class StripeClient {
         verificationReports = StripeVerificationReportRoutes(apiHandler: handler)
         
         webhookEndpoints = StripeWebhookEndpointRoutes(apiHandler: handler)
+        
     }
 }

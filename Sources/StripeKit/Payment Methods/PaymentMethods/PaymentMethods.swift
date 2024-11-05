@@ -48,6 +48,16 @@ public struct PaymentMethodAlipay: Codable {
     public init(){}
 }
 
+// MARK: Alma
+public struct PaymentMethodAlma: Codable {
+    public init(){}
+}
+
+// MARK: Amazon Pay
+public struct PaymentMethodAmazonPay: Codable {
+    public init(){}
+}
+
 // MARK: AU Becs Debit
 public struct PaymentMethodAuBecsDebit: Codable {
     /// Six-digit number identifying bank and branch associated with this bank account.
@@ -755,6 +765,11 @@ public enum PaymentMethodInteractPresentReadMethod: String, Codable {
     case contactlessMagstripeMode = "contactless_magstripe_mode"
 }
 
+// MARK: KakaoPay
+public struct PaymentMethodKakaoPay: Codable {
+    public init() {}
+}
+
 // MARK: Klarna
 public struct PaymentMethodKlarna: Codable {
     /// The customer’s date of birth, if provided.
@@ -771,6 +786,11 @@ public struct PaymentMethodKonbini: Codable {
     public init() {}
 }
 
+// MARK: KrCard
+public struct PaymentMethodKrCard: Codable {
+    public init() {}
+}
+
 // MARK: Link
 public struct PaymentMethodLink: Codable {
     /// Account owner’s email address.
@@ -782,6 +802,28 @@ public struct PaymentMethodLink: Codable {
         self.email = email
         self.persistentToken = persistentToken
     }
+}
+
+// MARK: MobilePay
+public struct PaymentMethodMobilePay: Codable {
+    public init() {}
+}
+
+// MARK: Multibanco
+public struct PaymentMethodMultibanco: Codable {
+    public init() {}
+}
+
+// MARK: NaverPay
+public struct PaymentMethodNaverPay: Codable {
+    var funding: PaymentMethodNaverPayFunding?
+}
+
+public enum PaymentMethodNaverPayFunding: String, Codable {
+    // Use a card to fund this transaction
+    case card
+    // Use points to fund this transaction
+    case points
 }
 
 // MARK: OXXO
@@ -827,8 +869,19 @@ public enum PaymentMethodP24Bank: String, Codable {
     case boz = "boz"
 }
 
+// MARK: Payco
+public struct PaymentMethodPayco: Codable {
+    public init() {}
+}
+
+
 // MARK: Paynow
 public struct PaymentMethodPaynow: Codable {
+    public init() {}
+}
+
+// MARK: Paypal
+public struct PaymentMethodPaypal: Codable {
     public init() {}
 }
 
@@ -841,7 +894,17 @@ public struct PaymentMethodPix: Codable {
 public struct PaymentMethodPromptPay: Codable {
     public init() {}
 }
- 
+
+// MARK: Revolut Pay
+public struct PaymentMethodRevolutPay: Codable {
+    public init() {}
+}
+
+// MARK: Samsung Pay
+public struct PaymentMethodSamsungPay: Codable {
+    public init() {}
+}
+
 // MARK: Sepa Debit
 public struct PaymentMethodSepaDebit: Codable {
     /// Bank code of bank associated with the bank account.
@@ -892,6 +955,16 @@ public struct PaymentMethodSofort: Codable {
     public init(country: String? = nil) {
         self.country = country
     }
+}
+
+// MARK: Swish
+public struct PaymentMethodSwish: Codable {
+    public init() {}
+}
+
+// MARK: Twint
+public struct PaymentMethodTwint: Codable {
+    public init() {}
 }
 
 // MARK: US Bank Account
@@ -1028,5 +1101,10 @@ public enum PaymentMethodUSBankAccountStatusDetailsBlockedReason: String, Codabl
 
 // MARK: WechatPay
 public struct PaymentMethodWechatPay: Codable {
+    public init() {}
+}
+
+// MARK: Zip
+public struct PaymentMethodZip: Codable {
     public init() {}
 }
