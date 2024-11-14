@@ -32,6 +32,7 @@ public protocol PaymentIntentRoutes: StripeAPIRoute {
     ///   - applicationFeeAmount: The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner’s Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents use case for connected accounts.
     ///   - captureMethod: Controls when the funds will be captured from the customer’s account.
     ///   - confirmationMethod: The confirmation method.
+    ///   - confirmationToken: ID of the ConfirmationToken used to confirm this PaymentIntent. If the provided ConfirmationToken contains properties that are also being provided in this request, such as payment_method, then the values in this request will take precedence.
     ///   - errorOnRequiresAction: Set to `true` to fail the payment attempt if the PaymentIntent transitions into `requires_action`. This parameter is intended for simpler integrations that do not handle customer actions, like saving cards without authentication. This parameter can only be used with `confirm=true`.
     ///   - mandate: ID of the mandate to be used for this payment. This parameter can only be used with `confirm=true`.
     ///   - mandateData: This hash contains details about the Mandate to create. This parameter can only be used with `confirm=true`.
@@ -63,6 +64,7 @@ public protocol PaymentIntentRoutes: StripeAPIRoute {
                 applicationFeeAmount: Int?,
                 captureMethod: PaymentIntentCaptureMethod?,
                 confirmationMethod: PaymentIntentConfirmationMethod?,
+                confirmationToken: String?,
                 errorOnRequiresAction: Bool?,
                 mandate: String?,
                 mandateData: [String: Any]?,
@@ -287,6 +289,7 @@ public struct StripePaymentIntentRoutes: PaymentIntentRoutes {
                        applicationFeeAmount: Int? = nil,
                        captureMethod: PaymentIntentCaptureMethod? = nil,
                        confirmationMethod: PaymentIntentConfirmationMethod? = nil,
+                       confirmationToken: String? = nil,
                        errorOnRequiresAction: Bool? = nil,
                        mandate: String? = nil,
                        mandateData: [String: Any]? = nil,

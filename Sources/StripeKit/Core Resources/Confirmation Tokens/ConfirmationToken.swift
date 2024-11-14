@@ -43,7 +43,7 @@ public struct ConfirmationToken: Codable {
                 mandateData: ConfirmationTokenMandateData? = nil,
                 paymentIntent: String? = nil,
                 paymentMethodOptions: ConfirmationTokenPaymentMethodOptions? = nil,
-                paymentMethodPreview: PaymentMethod? = nil,
+                paymentMethodPreview: PaymentMethodPreview? = nil,
                 returnUrl: String? = nil,
                 setupFutureUsage: ConfirmationTokenSetupFutureUsage? = nil,
                 setupIntent: String? = nil,
