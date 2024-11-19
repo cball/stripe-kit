@@ -67,7 +67,7 @@ public struct PaymentMethodDomainStatusDetails: Codable {
 }
 
 /// The status of the payment method on the domain
-public enum PaymentMethodDomainStatus: Codable {
+public enum PaymentMethodDomainStatus: String, Codable {
     case active
     case inactive
 } 
