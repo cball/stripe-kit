@@ -28,7 +28,7 @@ public struct PaymentMethodDomain: Codable {
     /// The status of Link's eligibility on the domain.
     public var link: PaymentMethodDomainDetails
     /// The status of PayPal's eligibility on the domain.
-    public var payPal: PaymentMethodDomainDetails
+    public var paypal: PaymentMethodDomainDetails
     
     public init(id: String,
                 object: String,
@@ -40,7 +40,7 @@ public struct PaymentMethodDomain: Codable {
                 applePay: PaymentMethodDomainDetails,
                 googlePay: PaymentMethodDomainDetails,
                 link: PaymentMethodDomainDetails,
-                payPal: PaymentMethodDomainDetails) {
+                paypal: PaymentMethodDomainDetails) {
         self.id = id
         self.object = object
         self.created = created
@@ -51,7 +51,7 @@ public struct PaymentMethodDomain: Codable {
         self.applePay = applePay
         self.googlePay = googlePay
         self.link = link
-        self.payPal = payPal
+        self.paypal = paypal
     }
 }
 
