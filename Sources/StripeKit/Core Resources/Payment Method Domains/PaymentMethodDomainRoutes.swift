@@ -68,7 +68,7 @@ public struct StripePaymentMethodDomainRoutes: PaymentMethodDomainRoutes {
     }
     
     public func update(id: String, enabled: Bool) async throws -> PaymentMethodDomain {
-        var body: [String: Any] = ["enabled": enabled]
+        let body: [String: Any] = ["enabled": enabled]
         
         return try await apiHandler.send(method: .POST,
                                        path: "\(paymentMethodDomains)/\(id)",

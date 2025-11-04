@@ -52,6 +52,8 @@ public struct Session: Codable {
     public var billingAddressCollection: SessionBillingAddressCollection?
     /// Client secret to be used when initializing Stripe.js embedded checkout.
     public var clientSecret: String?
+    /// Information about the customer collected within the Checkout Session.
+    public var collectedInformation: SessionCollectedInformation?
     /// Results of `consent_collection` for this session.
     public var consent: SessionConsent?
     /// When set, provides configuration for the Checkout Session to gather active consent from customers.
@@ -135,6 +137,7 @@ public struct Session: Codable {
                 automaticTax: SessionAutomaticTax? = nil,
                 billingAddressCollection: SessionBillingAddressCollection? = nil,
                 clientSecret: String? = nil,
+                collectedInformation: SessionCollectedInformation? = nil,
                 consent: SessionConsent? = nil,
                 consentCollection: SessionConsentCollection? = nil,
                 created: Date,
@@ -508,6 +511,23 @@ public enum SessionConsentTermsOfService: String, Codable {
     case accepted
 }
 
+public struct SessionCollectedInformation: Codable {
+    /// Customer’s business name for this Checkout Session
+    public var businessName: String?
+    /// Customer’s individual name for this Checkout Session
+    public var individualName: String?
+    ///Shipping information for this Checkout Session.
+    public var shippingDetails: SessionCollectedInformationShippingDetails?
+}
+
+public struct SessionCollectedInformationShippingDetails: Codable {
+    /// Customer address
+    public var address: Address?
+    /// Customer name
+    public var name: String?
+}
+
+
 public struct SessionConsentCollection: Codable {
     /// If set to `auto`, enables the collection of customer consent for promotional communications. The Checkout Session will determine whether to display an option to opt into promotional communication from the merchant depending on the customer’s locale. Only available to US merchants.
     public var promotions: String?
@@ -544,8 +564,12 @@ public struct SessionCurrencyConversion: Codable {
 public struct SessionCustomerDetails: Codable {
     /// The customer’s address after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022.
     public var address: Address?
+    /// The customer’s business name after a completed Checkout Session.
+    public var businessName: String?
     /// The customer’s email at time of checkout.
     public var email: String?
+    /// The customer’s individual name after a completed Checkout Session.
+    public var individualName: String?
     /// The customer’s name after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022.
     public var name: String?
     /// The customer’s phone number at the time of checkout
@@ -556,7 +580,9 @@ public struct SessionCustomerDetails: Codable {
     public var taxIds: [SessionCustomerDetailsTaxId]?
     
     public init(address: Address? = nil,
+                businessName: String?,
                 email: String? = nil,
+                individualName: String? = nil,
                 name: String? = nil,
                 phone: String? = nil,
                 taxExempt: String? = nil,
