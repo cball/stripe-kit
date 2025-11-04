@@ -52,6 +52,8 @@ public struct Session: Codable {
     public var billingAddressCollection: SessionBillingAddressCollection?
     /// Client secret to be used when initializing Stripe.js embedded checkout.
     public var clientSecret: String?
+    /// Information about the customer collected within the Checkout Session.
+    public var collectedInformation: SessionCollectedInformation?
     /// Results of `consent_collection` for this session.
     public var consent: SessionConsent?
     /// When set, provides configuration for the Checkout Session to gather active consent from customers.
@@ -112,59 +114,61 @@ public struct Session: Codable {
     public var totalDetails: SessionTotalDetails?
     /// The UI mode of the Session. Defaults to hosted.
     public var uiMode: SessionUIMode?
-    
-    public init(id: String,
-                cancelUrl: String? = nil,
-                clientReferenceId: String? = nil,
-                currency: Currency? = nil,
-                customer: String? = nil,
-                customerEmail: String? = nil,
-                lineItems: SessionLineItemList? = nil,
-                metadata: [String : String]? = nil,
-                mode: SessionMode? = nil,
-                paymentIntent: String? = nil,
-                paymentStatus: SessionPaymentStatus? = nil,
-                status: SessionStatus? = nil,
-                successUrl: String? = nil,
-                url: String? = nil,
-                object: String? = nil,
-                afterExpiration: SessionAfterExpiration? = nil,
-                allowPromotionCodes: Bool? = nil,
-                amountSubtotal: Int? = nil,
-                amountTotal: Int? = nil,
-                automaticTax: SessionAutomaticTax? = nil,
-                billingAddressCollection: SessionBillingAddressCollection? = nil,
-                clientSecret: String? = nil,
-                consent: SessionConsent? = nil,
-                consentCollection: SessionConsentCollection? = nil,
-                created: Date,
-                currencyConversion: SessionCurrencyConversion? = nil,
-                customFields: [SessionCustomField]? = nil,
-                customText: SessionCustomText? = nil,
-                customerCreation: SessionCustomerCreation? = nil,
-                customerDetails: SessionCustomerDetails? = nil,
-                expiresAt: Date? = nil,
-                invoice: String? = nil,
-                invoiceCreation: SessionInvoiceCreation? = nil,
-                livemode: Bool? = nil,
-                locale: SessionLocale? = nil,
-                paymentLink: String? = nil,
-                paymentMethodCollection: SessionPaymentMethodCollection? = nil,
-                paymentMethodOptions: SessionPaymentMethodOptions? = nil,
-                paymentMethodTypes: [String]? = nil,
-                phoneNumberCollection: SessionPhoneNumberCollection? = nil,
-                recoveredFrom: String? = nil,
-                setupIntent: String? = nil,
-                shippingAddressCollection: SessionShippingAddressCollection? = nil,
-                shippingRate: String? = nil,
-                shippingCost: SessionShippingCost? = nil,
-                shippingDetails: ShippingLabel? = nil,
-                shipppingOptions: [SessionShippingOption]? = nil,
-                submitType: SessionSubmitType? = nil,
-                subscription: String? = nil,
-                taxIdCollection: SessionTaxIdCollection? = nil,
-                totalDetails: SessionTotalDetails? = nil,
-                uiMode: SessionUIMode? = nil) {
+
+    public init(
+        id: String,
+        cancelUrl: String? = nil,
+        clientReferenceId: String? = nil,
+        currency: Currency? = nil,
+        customer: String? = nil,
+        customerEmail: String? = nil,
+        lineItems: SessionLineItemList? = nil,
+        metadata: [String: String]? = nil,
+        mode: SessionMode? = nil,
+        paymentIntent: String? = nil,
+        paymentStatus: SessionPaymentStatus? = nil,
+        status: SessionStatus? = nil,
+        successUrl: String? = nil,
+        url: String? = nil,
+        object: String? = nil,
+        afterExpiration: SessionAfterExpiration? = nil,
+        allowPromotionCodes: Bool? = nil,
+        amountSubtotal: Int? = nil,
+        amountTotal: Int? = nil,
+        automaticTax: SessionAutomaticTax? = nil,
+        billingAddressCollection: SessionBillingAddressCollection? = nil,
+        clientSecret: String? = nil,
+        consent: SessionConsent? = nil,
+        consentCollection: SessionConsentCollection? = nil,
+        created: Date,
+        currencyConversion: SessionCurrencyConversion? = nil,
+        customFields: [SessionCustomField]? = nil,
+        customText: SessionCustomText? = nil,
+        customerCreation: SessionCustomerCreation? = nil,
+        customerDetails: SessionCustomerDetails? = nil,
+        expiresAt: Date? = nil,
+        invoice: String? = nil,
+        invoiceCreation: SessionInvoiceCreation? = nil,
+        livemode: Bool? = nil,
+        locale: SessionLocale? = nil,
+        paymentLink: String? = nil,
+        paymentMethodCollection: SessionPaymentMethodCollection? = nil,
+        paymentMethodOptions: SessionPaymentMethodOptions? = nil,
+        paymentMethodTypes: [String]? = nil,
+        phoneNumberCollection: SessionPhoneNumberCollection? = nil,
+        recoveredFrom: String? = nil,
+        setupIntent: String? = nil,
+        shippingAddressCollection: SessionShippingAddressCollection? = nil,
+        shippingRate: String? = nil,
+        shippingCost: SessionShippingCost? = nil,
+        shippingDetails: ShippingLabel? = nil,
+        shipppingOptions: [SessionShippingOption]? = nil,
+        submitType: SessionSubmitType? = nil,
+        subscription: String? = nil,
+        taxIdCollection: SessionTaxIdCollection? = nil,
+        totalDetails: SessionTotalDetails? = nil,
+        uiMode: SessionUIMode? = nil
+    ) {
         self.id = id
         self.cancelUrl = cancelUrl
         self.clientReferenceId = clientReferenceId
@@ -235,14 +239,16 @@ public struct SessionCustomField: Codable {
     public var text: SessionCustomFieldText?
     /// The type of the field.
     public var type: SessionCustomFieldType?
-    
-    public init(dropdown: SessionCustomFieldDropdown? = nil,
-                key: String? = nil,
-                label: SessionCustomFieldLabel? = nil,
-                numeric: SessionCustomFieldNumeric? = nil,
-                optional: Bool? = nil,
-                text: SessionCustomFieldText? = nil,
-                type: SessionCustomFieldType? = nil) {
+
+    public init(
+        dropdown: SessionCustomFieldDropdown? = nil,
+        key: String? = nil,
+        label: SessionCustomFieldLabel? = nil,
+        numeric: SessionCustomFieldNumeric? = nil,
+        optional: Bool? = nil,
+        text: SessionCustomFieldText? = nil,
+        type: SessionCustomFieldType? = nil
+    ) {
         self.dropdown = dropdown
         self.key = key
         self.label = label
@@ -258,9 +264,11 @@ public struct SessionCustomFieldDropdown: Codable {
     public var options: [SessionCustomFieldDropdownOption]?
     /// The option selected by the customer. This will be the `value` for the option.
     public var value: String?
-    
-    public init(options: [SessionCustomFieldDropdownOption]? = nil,
-                value: String? = nil) {
+
+    public init(
+        options: [SessionCustomFieldDropdownOption]? = nil,
+        value: String? = nil
+    ) {
         self.options = options
         self.value = value
     }
@@ -271,7 +279,7 @@ public struct SessionCustomFieldDropdownOption: Codable {
     public var label: String?
     /// The value for this option, not displayed to the customer, used by your integration to reconcile the option selected by the customer. Must be unique to this option, alphanumeric, and up to 100 characters.
     public var value: String?
-    
+
     public init(label: String? = nil, value: String? = nil) {
         self.label = label
         self.value = value
@@ -283,7 +291,7 @@ public struct SessionCustomFieldLabel: Codable {
     public var custom: String?
     ///The type of the label.
     public var type: SessionCustomFieldLabelType?
-    
+
     public init(custom: String? = nil, type: SessionCustomFieldLabelType? = nil) {
         self.custom = custom
         self.type = type
@@ -302,10 +310,12 @@ public struct SessionCustomFieldNumeric: Codable {
     public var minimumLength: Int?
     /// The value entered by the customer, containing only digits.
     public var value: String?
-    
-    public init(maximumLength: Int? = nil,
-                minimumLength: Int? = nil,
-                value: String? = nil) {
+
+    public init(
+        maximumLength: Int? = nil,
+        minimumLength: Int? = nil,
+        value: String? = nil
+    ) {
         self.maximumLength = maximumLength
         self.minimumLength = minimumLength
         self.value = value
@@ -319,10 +329,12 @@ public struct SessionCustomFieldText: Codable {
     public var minimumLength: Int?
     /// The value entered by the customer.
     public var value: String?
-    
-    public init(maximumLength: Int? = nil,
-                minimumLength: Int? = nil,
-                value: String? = nil) {
+
+    public init(
+        maximumLength: Int? = nil,
+        minimumLength: Int? = nil,
+        value: String? = nil
+    ) {
         self.maximumLength = maximumLength
         self.minimumLength = minimumLength
         self.value = value
@@ -343,9 +355,11 @@ public struct SessionCustomText: Codable {
     public var shippingAddress: SessionCustomTextShippingAddress?
     /// Custom text that should be displayed alongside the payment confirmation button.
     public var submit: SessionCustomTextSubmit?
-    
-    public init(shippingAddress: SessionCustomTextShippingAddress? = nil,
-                submit: SessionCustomTextSubmit? = nil) {
+
+    public init(
+        shippingAddress: SessionCustomTextShippingAddress? = nil,
+        submit: SessionCustomTextSubmit? = nil
+    ) {
         self.shippingAddress = shippingAddress
         self.submit = submit
     }
@@ -354,7 +368,7 @@ public struct SessionCustomText: Codable {
 public struct SessionCustomTextShippingAddress: Codable {
     /// Text may be up to 1000 characters in length.
     public var message: String?
-    
+
     public init(message: String? = nil) {
         self.message = message
     }
@@ -363,7 +377,7 @@ public struct SessionCustomTextShippingAddress: Codable {
 public struct SessionCustomTextSubmit: Codable {
     /// Text may be up to 1000 characters in length.
     public var message: String?
-    
+
     public init(message: String? = nil) {
         self.message = message
     }
@@ -380,7 +394,7 @@ public struct SessionInvoiceCreation: Codable {
     public var enabled: Bool?
     /// Parameters passed when creating invoices for payment-mode Checkout Sessions.
     public var invoiceData: SessionInvoiceCreationInvoiceData?
-    
+
     public init(enabled: Bool? = nil, invoiceData: SessionInvoiceCreationInvoiceData? = nil) {
         self.enabled = enabled
         self.invoiceData = invoiceData
@@ -400,13 +414,15 @@ public struct SessionInvoiceCreationInvoiceData: Codable {
     public var metadata: [String: String]?
     /// Options for invoice PDF rendering.
     public var renderingOptions: SessionInvoiceCreationInvoiceDataRenderingOptions?
-    
-    public init(accountTaxIds: [String]? = nil,
-                customFields: [SessionInvoiceCreationInvoiceDataCustomFields]? = nil,
-                description: String? = nil,
-                footer: String? = nil,
-                metadata: [String : String]? = nil,
-                renderingOptions: SessionInvoiceCreationInvoiceDataRenderingOptions? = nil) {
+
+    public init(
+        accountTaxIds: [String]? = nil,
+        customFields: [SessionInvoiceCreationInvoiceDataCustomFields]? = nil,
+        description: String? = nil,
+        footer: String? = nil,
+        metadata: [String: String]? = nil,
+        renderingOptions: SessionInvoiceCreationInvoiceDataRenderingOptions? = nil
+    ) {
         self._accountTaxIds = ExpandableCollection(ids: accountTaxIds)
         self.customFields = customFields
         self.description = description
@@ -421,7 +437,7 @@ public struct SessionInvoiceCreationInvoiceDataCustomFields: Codable {
     public var name: String?
     /// The value of the custom field.
     public var value: String?
-    
+
     public init(name: String? = nil, value: String? = nil) {
         self.name = name
         self.value = value
@@ -431,7 +447,7 @@ public struct SessionInvoiceCreationInvoiceDataCustomFields: Codable {
 public struct SessionInvoiceCreationInvoiceDataRenderingOptions: Codable {
     /// How line-item prices and amounts will be displayed with respect to tax on invoice PDFs.
     public var amountTaxDisplay: String?
-    
+
     public init(amountTaxDisplay: String? = nil) {
         self.amountTaxDisplay = amountTaxDisplay
     }
@@ -440,7 +456,7 @@ public struct SessionInvoiceCreationInvoiceDataRenderingOptions: Codable {
 public struct SessionAfterExpiration: Codable {
     /// When set, configuration used to recover the Checkout Session on expiry.
     public var recovery: SessionAfterExpirationRecovery?
-    
+
     public init(recovery: SessionAfterExpirationRecovery? = nil) {
         self.recovery = recovery
     }
@@ -455,11 +471,13 @@ public struct SessionAfterExpirationRecovery: Codable {
     public var expiresAt: Date?
     /// URL that creates a new Checkout Session when clicked that is a copy of this expired Checkout Session
     public var url: String?
-    
-    public init(allowPromotionCodes: Bool? = nil,
-                enabled: Bool? = nil,
-                expiresAt: Date? = nil,
-                url: String? = nil) {
+
+    public init(
+        allowPromotionCodes: Bool? = nil,
+        enabled: Bool? = nil,
+        expiresAt: Date? = nil,
+        url: String? = nil
+    ) {
         self.allowPromotionCodes = allowPromotionCodes
         self.enabled = enabled
         self.expiresAt = expiresAt
@@ -495,12 +513,30 @@ public struct SessionConsent: Codable {
     public var promotions: String?
     /// If `accepted`, the customer in this Checkout Session has agreed to the merchant’s terms of service.
     public var termsOfService: SessionConsentTermsOfService?
-    
-    public init(promotions: String? = nil,
-                termsOfService: SessionConsentTermsOfService? = nil) {
+
+    public init(
+        promotions: String? = nil,
+        termsOfService: SessionConsentTermsOfService? = nil
+    ) {
         self.promotions = promotions
         self.termsOfService = termsOfService
     }
+}
+
+public struct SessionCollectedInformation: Codable {
+    /// Customer’s business name for this Checkout Session
+    public var businessName: String?
+    /// Customer’s individual name for this Checkout Session
+    public var individualName: String?
+    ///Shipping information for this Checkout Session.
+    public var shippingDetails: SessionCollectedInformationShippingDetails?
+}
+
+public struct SessionCollectedInformationShippingDetails: Codable {
+    /// Customer address
+    public var address: Address?
+    /// Customer name
+    public var name: String?
 }
 
 public enum SessionConsentTermsOfService: String, Codable {
@@ -513,7 +549,7 @@ public struct SessionConsentCollection: Codable {
     public var promotions: String?
     /// If set to `required`, it requires customers to accept the terms of service before being able to pay.
     public var termsOfService: String?
-    
+
     public init(promotions: String? = nil, termsOfService: String? = nil) {
         self.promotions = promotions
         self.termsOfService = termsOfService
@@ -529,11 +565,13 @@ public struct SessionCurrencyConversion: Codable {
     public var fxRate: String?
     /// Creation currency of the CheckoutSession before localization
     public var sourceCurrency: Currency?
-    
-    public init(amountSubtotal: Int? = nil,
-                amountTotal: Int? = nil,
-                fxRate: String? = nil,
-                sourceCurrency: Currency? = nil) {
+
+    public init(
+        amountSubtotal: Int? = nil,
+        amountTotal: Int? = nil,
+        fxRate: String? = nil,
+        sourceCurrency: Currency? = nil
+    ) {
         self.amountSubtotal = amountSubtotal
         self.amountTotal = amountTotal
         self.fxRate = fxRate
@@ -544,8 +582,12 @@ public struct SessionCurrencyConversion: Codable {
 public struct SessionCustomerDetails: Codable {
     /// The customer’s address after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022.
     public var address: Address?
+    /// The customer’s business name after a completed Checkout Session.
+    public var businessName: String?
     /// The customer’s email at time of checkout.
     public var email: String?
+    /// The customer’s individual name after a completed Checkout Session.
+    public var individualName: String?
     /// The customer’s name after a completed Checkout Session. Note: This property is populated only for sessions on or after March 30, 2022.
     public var name: String?
     /// The customer’s phone number at the time of checkout
@@ -554,13 +596,17 @@ public struct SessionCustomerDetails: Codable {
     public var taxExempt: String?
     /// The customer’s tax IDs at time of checkout.
     public var taxIds: [SessionCustomerDetailsTaxId]?
-    
-    public init(address: Address? = nil,
-                email: String? = nil,
-                name: String? = nil,
-                phone: String? = nil,
-                taxExempt: String? = nil,
-                taxIds: [SessionCustomerDetailsTaxId]? = nil) {
+
+    public init(
+        address: Address? = nil,
+        businessName: String?,
+        email: String? = nil,
+        individualName: String? = nil,
+        name: String? = nil,
+        phone: String? = nil,
+        taxExempt: String? = nil,
+        taxIds: [SessionCustomerDetailsTaxId]? = nil
+    ) {
         self.address = address
         self.email = email
         self.name = name
@@ -575,7 +621,7 @@ public struct SessionCustomerDetailsTaxId: Codable {
     public var type: TaxIDType
     /// The value of the tax ID.
     public var value: String?
-    
+
     public init(type: TaxIDType, value: String? = nil) {
         self.type = type
         self.value = value
@@ -607,19 +653,21 @@ public struct SessionLineItem: Codable {
     public var quantity: Int?
     /// The taxes applied to the line item. This field is not included by default. To include it in the response, expand the `taxes` field.
     public var taxes: [SessionLineItemTax]?
-    
-    public init(id: String,
-                object: String,
-                amountDiscount: Int? = nil,
-                amountSubtotal: Int? = nil,
-                amountTax: Int? = nil,
-                amountTotal: Int? = nil,
-                currency: Currency? = nil,
-                description: String? = nil,
-                discounts: [SessionLineItemDiscount]? = nil,
-                price: Price? = nil,
-                quantity: Int? = nil,
-                taxes: [SessionLineItemTax]? = nil) {
+
+    public init(
+        id: String,
+        object: String,
+        amountDiscount: Int? = nil,
+        amountSubtotal: Int? = nil,
+        amountTax: Int? = nil,
+        amountTotal: Int? = nil,
+        currency: Currency? = nil,
+        description: String? = nil,
+        discounts: [SessionLineItemDiscount]? = nil,
+        price: Price? = nil,
+        quantity: Int? = nil,
+        taxes: [SessionLineItemTax]? = nil
+    ) {
         self.id = id
         self.object = object
         self.amountDiscount = amountDiscount
@@ -640,7 +688,7 @@ public struct SessionLineItemDiscount: Codable {
     public var amount: Int?
     /// The discount applied.
     public var discount: Discount?
-    
+
     public init(amount: Int? = nil, discount: Discount? = nil) {
         self.amount = amount
         self.discount = discount
@@ -652,7 +700,7 @@ public struct SessionLineItemTax: Codable {
     public var amount: Int?
     /// The tax rate applied.
     public var rate: TaxRate?
-    
+
     public init(amount: Int? = nil, rate: TaxRate? = nil) {
         self.amount = amount
         self.rate = rate
@@ -664,11 +712,13 @@ public struct SessionLineItemList: Codable {
     public var hasMore: Bool?
     public var url: String?
     public var data: [SessionLineItem]?
-    
-    public init(object: String,
-                hasMore: Bool? = nil,
-                url: String? = nil,
-                data: [SessionLineItem]? = nil) {
+
+    public init(
+        object: String,
+        hasMore: Bool? = nil,
+        url: String? = nil,
+        data: [SessionLineItem]? = nil
+    ) {
         self.object = object
         self.hasMore = hasMore
         self.url = url
@@ -746,7 +796,7 @@ public enum SessionPaymentMethodCollection: String, Codable {
 public struct SessionPhoneNumberCollection: Codable {
     /// Indicates whether phone number collection is enabled for the session
     public var enabled: Bool
-    
+
     public init(enabled: Bool) {
         self.enabled = enabled
     }
@@ -755,7 +805,7 @@ public struct SessionPhoneNumberCollection: Codable {
 public struct SessionShippingAddressCollection: Codable {
     /// An array of two-letter ISO country codes representing which countries Checkout should provide as options for shipping locations. Unsupported country codes: `AS, CX, CC, CU, HM, IR, KP, MH, FM, NF, MP, PW, SD, SY, UM, VI`.
     public var allowedCountries: [String]?
-    
+
     public init(allowedCountries: [String]? = nil) {
         self.allowedCountries = allowedCountries
     }
@@ -772,12 +822,14 @@ public struct SessionShippingCost: Codable {
     @Expandable<ShippingRate> public var shippingRate: String?
     /// The taxes applied to the shipping rate. This field is not included by default. To include it in the response, expand the `taxes` field.
     public var taxes: [SessionShippingCostTaxes]?
-    
-    public init(amountSubtotal: Int? = nil,
-                amountTax: Int? = nil,
-                amountTotal: Int? = nil,
-                shippingRate: String? = nil,
-                taxes: [SessionShippingCostTaxes]? = nil) {
+
+    public init(
+        amountSubtotal: Int? = nil,
+        amountTax: Int? = nil,
+        amountTotal: Int? = nil,
+        shippingRate: String? = nil,
+        taxes: [SessionShippingCostTaxes]? = nil
+    ) {
         self.amountSubtotal = amountSubtotal
         self.amountTax = amountTax
         self.amountTotal = amountTotal
@@ -791,7 +843,7 @@ public struct SessionShippingCostTaxes: Codable {
     public var amount: Int?
     /// The tax rate applied.
     public var rate: TaxRate?
-    
+
     public init(amount: Int? = nil, rate: TaxRate? = nil) {
         self.amount = amount
         self.rate = rate
@@ -803,7 +855,7 @@ public struct SessionShippingOption: Codable {
     public var shippingAmount: Int?
     /// The shipping rate.
     @Expandable<ShippingRate> public var shippingRate: String?
-    
+
     public init(shippingAmount: Int? = nil, shippingRate: String? = nil) {
         self.shippingAmount = shippingAmount
         self._shippingRate = Expandable(id: shippingRate)
@@ -835,11 +887,13 @@ public struct SessionTotalDetails: Codable {
     public var amountTax: Int?
     /// Breakdown of individual tax and discount amounts that add up to the totals. This field is not included by default. To include it in the response, expand the breakdown field.
     public var breakdown: SessionTotalDetailsBreakdown?
-    
-    public init(amountDiscount: Int? = nil,
-                amountShipping: Int? = nil,
-                amountTax: Int? = nil,
-                breakdown: SessionTotalDetailsBreakdown? = nil) {
+
+    public init(
+        amountDiscount: Int? = nil,
+        amountShipping: Int? = nil,
+        amountTax: Int? = nil,
+        breakdown: SessionTotalDetailsBreakdown? = nil
+    ) {
         self.amountDiscount = amountDiscount
         self.amountShipping = amountShipping
         self.amountTax = amountTax
@@ -859,7 +913,7 @@ public struct SessionTotalDetailsBreakdownDiscount: Codable {
     public var amount: Int?
     /// The discount applied.
     public var discount: Discount?
-    
+
     public init(amount: Int? = nil, discount: Discount? = nil) {
         self.amount = amount
         self.discount = discount
@@ -871,7 +925,7 @@ public struct SessionTotalDetailsBreakdownTax: Codable {
     public var amount: Int?
     /// The tax rate applied.
     public var rate: TaxRate?
-    
+
     public init(amount: Int? = nil, rate: TaxRate? = nil) {
         self.amount = amount
         self.rate = rate
@@ -890,7 +944,7 @@ public enum SessionPaymentStatus: String, Codable {
 public struct SessionTaxIdCollection: Codable {
     /// Indicates whether tax ID collection is enabled for the session
     public var enabled: Bool?
-    
+
     public init(enabled: Bool? = nil) {
         self.enabled = enabled
     }
@@ -901,11 +955,13 @@ public struct SessionList: Codable {
     public var hasMore: Bool?
     public var url: String?
     public var data: [Session]?
-    
-    public init(object: String,
-                hasMore: Bool? = nil,
-                url: String? = nil,
-                data: [Session]? = nil) {
+
+    public init(
+        object: String,
+        hasMore: Bool? = nil,
+        url: String? = nil,
+        data: [Session]? = nil
+    ) {
         self.object = object
         self.hasMore = hasMore
         self.url = url
