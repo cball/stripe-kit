@@ -702,6 +702,14 @@ public enum ConnectAccountRequirementsErrorCode: String, Codable {
     case invalidUrlFormat = "invalid_url_format"
     /// Generic business URLs aren't supported.
     case invalidUrlDenylisted = "invalid_url_denylisted"
+    /// An unrecognized error code returned by Stripe.
+    case unknown = "unknown"
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try container.decode(String.self)
+        self = ConnectAccountRequirementsErrorCode(rawValue: rawValue) ?? .unknown
+    }
 }
 
 public struct ConnectAccountFutureRequirements: Codable {
