@@ -509,7 +509,11 @@ public struct StripeSubscriptionRoutes: SubscriptionRoutes {
         }
         
         if let pauseCollection {
-            pauseCollection.forEach { body["pause_collection[\($0)]"] = $1 }
+            if pauseCollection.isEmpty {
+                body["pause_collection"] = ""
+            } else {
+                pauseCollection.forEach { body["pause_collection[\($0)]"] = $1 }
+            }
         }
         
         if let paymentSettings {
