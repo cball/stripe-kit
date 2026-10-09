@@ -184,7 +184,18 @@ public enum PaymentMethodDetailsCardBrand: String, Codable {
     case mastercard
     case unionpay
     case visa
+    /// A Link-funded card payment (Stripe reports `brand: "link"` when Link pays from a card or bank).
+    case link
     case unknown
+}
+
+extension PaymentMethodDetailsCardBrand {
+    /// Stripe adds brands over time; an unrecognized one decodes as `.unknown` instead of
+    /// failing the whole Charge / PaymentMethod / event it's nested in.
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        self = Self(rawValue: rawValue) ?? .unknown
+    }
 }
 
 public enum PaymentMethodCardNetwork: String, Codable {
@@ -198,7 +209,17 @@ public enum PaymentMethodCardNetwork: String, Codable {
     case mastercard
     case unionpay
     case visa
+    /// Link-funded card payments report `network: "link"`.
+    case link
     case unknown
+}
+
+extension PaymentMethodCardNetwork {
+    /// An unrecognized network decodes as `.unknown` instead of failing the enclosing object.
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        self = Self(rawValue: rawValue) ?? .unknown
+    }
 }
 
 public struct PaymentMethodDetailsCardChecks: Codable {
@@ -497,6 +518,15 @@ public enum PaymentMethodDetailsCardWalletType: String, Codable {
     case samsungPay = "samsung_pay"
     case visaCheckout = "visa_checkout"
     case link
+    case unknown
+}
+
+extension PaymentMethodDetailsCardWalletType {
+    /// An unrecognized wallet decodes as `.unknown` instead of failing the enclosing object.
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        self = Self(rawValue: rawValue) ?? .unknown
+    }
 }
 
 public struct PaymentMethodCardWalletVisaCheckout: Codable {

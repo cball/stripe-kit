@@ -151,6 +151,14 @@ public enum CardFundingType: String, Codable {
     case unknown
 }
 
+extension CardFundingType {
+    /// An unrecognized funding type decodes as `.unknown` instead of failing the enclosing object.
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        self = Self(rawValue: rawValue) ?? .unknown
+    }
+}
+
 public enum CardTokenizedMethod: String, Codable {
     case androidPay = "android_pay"
     case applePay = "apple_pay"
