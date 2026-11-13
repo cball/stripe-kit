@@ -36,6 +36,11 @@ private extension CharacterSet {
         var characterSet = CharacterSet.urlQueryAllowed
         characterSet.remove("&")
         characterSet.remove("+")
+        // `urlQueryAllowed` keeps these, but Stripe reads a bare `;` as a parameter separator
+        // (everything after it is dropped, or sent as a parameter of its own) and `=` separates
+        // a key from its value, so both must be escaped inside keys and values.
+        characterSet.remove(";")
+        characterSet.remove("=")
         return characterSet
     }()
 }

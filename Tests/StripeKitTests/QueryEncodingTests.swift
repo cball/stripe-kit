@@ -23,4 +23,11 @@ class QueryEncodingTests: XCTestCase {
         ]
         XCTAssertEqual(query.queryParameters, "items[0][plan]=plan_b&items[1][plan]=plan_nine")
     }
+
+    func testSemicolonsAndEqualsSignsAreEscaped() throws {
+        let query: [String: Any] = [
+            "metadata": ["question_a;b": "Acme; Inc = partner"]
+        ]
+        XCTAssertEqual(query.queryParameters, "metadata[question_a%3Bb]=Acme%3B%20Inc%20%3D%20partner")
+    }
 }
